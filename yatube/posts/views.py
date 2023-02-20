@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render
+from django.conf import settings
 
 from .models import Group, Post
-
+from .constans import NUMBER_OF_POSTS_PER_PAGE
 
 def index(request):
     posts = Post.objects.all()[:10]
@@ -12,8 +13,9 @@ def index(request):
 
 
 def group_posts(request, slug):
-    group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.all()[:10]
+    group = get_object_or_404(Group, slug=slug)    
+    posts = group.posts.all()[:NUMBER_OF_POSTS_PER_PAGE]
+   
     context = {
         'group': group,
         'posts': posts,
