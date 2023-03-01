@@ -1,9 +1,7 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
-
 
 #  создадим собственный класс для формы регистрации
 #  сделаем его наследником предустановленного класса UserCreationForm
@@ -15,11 +13,12 @@ class CreationForm(UserCreationForm):
         fields = ('first_name', 'last_name', 'username', 'email')
 
 
-#  создадим собственный класс для формы регистрации
-#  сделаем его наследником предустановленного класса UserCreationForm
-class CreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+#форма смены пароля
+class ChangeForm(PasswordChangeForm):
+    #class Meta(PasswordChangeForm.Meta):
         # укажем модель, с которой связана создаваемая форма
-        model = User
+       # model = User
         # укажем, какие поля должны быть видны в форме и в каком порядке
-        fields_2 = ('oldpassword', 'newpassword')
+        #fields = ('old_password','password1', 'password2')
+    model = User
+    field_order = ('old_password', 'new_password1', 'new_password2')
