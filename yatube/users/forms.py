@@ -14,11 +14,6 @@ class CreationForm(UserCreationForm):
 
 
 #форма смены пароля
-class ChangeForm(PasswordChangeForm):
-    #class Meta(PasswordChangeForm.Meta):
-        # укажем модель, с которой связана создаваемая форма
-       # model = User
-        # укажем, какие поля должны быть видны в форме и в каком порядке
-        #fields = ('old_password','password1', 'password2')
+class PasswChangeForm(PasswordChangeForm):    
     model = User
     field_order = ('old_password', 'new_password1', 'new_password2')

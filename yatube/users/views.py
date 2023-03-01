@@ -9,7 +9,7 @@ from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
 
 # Импортируем класс формы, чтобы сослаться на неё во view-классе
-from .forms import CreationForm, ChangeForm
+from .forms import CreationForm, PasswChangeForm
 
 
 class SignUp(CreateView):
@@ -20,7 +20,7 @@ class SignUp(CreateView):
 
 
 class ChangePassword(UpdateView):
-    form_class = ChangeForm
+    form_class = PasswChangeForm
     # После успешной регистрации перенаправляем пользователя на главную.
     success_url = reverse_lazy('users:password_change/done/')
     template_name = 'users/password_change_form.html'
