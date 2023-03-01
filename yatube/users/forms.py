@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -17,3 +17,8 @@ class CreationForm(UserCreationForm):
 class PasswChangeForm(PasswordChangeForm):    
     model = User
     field_order = ('old_password', 'new_password1', 'new_password2')
+
+
+class PasswResetForm(PasswordResetForm):
+    model = User
+    #fields = ('email')
