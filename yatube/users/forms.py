@@ -19,6 +19,6 @@ class PasswChangeForm(PasswordChangeForm):
     field_order = ('old_password', 'new_password1', 'new_password2')
 
 
-class PasswResetForm(PasswordResetForm):
+class PasswResetForm(PasswordChangeForm):
     model = User
-    #fields = ('email')
+    field_order = ('new_password1', 'new_password2')
