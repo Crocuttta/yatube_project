@@ -9,11 +9,16 @@ from .constans import NUMBER_OF_POSTS_PER_PAGE
 User = get_user_model()
 
 def index(request):
-    posts = Post.objects.all()[:10]
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 10) 
+    page_number = request.GET.get('page')
+
+    page_obj = paginator.get_page(page_number)
+    # Отдаем в словаре контекста
     context = {
-        'posts': posts,
+        'page_obj': page_obj,
     }
-    return render(request, 'posts/index.html', context)
+    return render(request, 'posts/index.html', context) 
 
 
 def group_posts(request, slug):
@@ -26,19 +31,26 @@ def group_posts(request, slug):
     }
     return render(request, 'posts/group_list.html', context)
 
-
-def post_detail(request, post_id):
-    # Здесь код запроса к модели и создание словаря контекста
-    context = {
-    }
-    return render(request, 'posts/post_detail.html', context) 
-
-
+'''
 def profile(request, username):
     # Здесь код запроса к модели и создание словаря контекста
     context = {username
     }
     return render(request, 'posts/profile.html', context)
+'''
+def post_detail(request, post_id):
+    # Здесь код запроса к модели и создание словаря контекста
+    post = get_object_or_404(Post, id=post_id)
+    posts_count = Post.objects.filter(author=post.author).count()   
+    
+    template = 'posts/post_detail.html'
+    context = {#'post_id' : post_id
+        'post' : post, 'posts_count' : posts_count
+    }
+    return render(request, template, context) 
+
+
+
 
 
 def profile(request, username):

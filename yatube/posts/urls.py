@@ -10,6 +10,6 @@ urlpatterns = [
     # Профайл пользователя
     path('profile/<str:username>/', views.profile, name='profile'),   
     # Просмотр записи
-    path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('post_detail/<int:post_id>/', views.post_detail, name='post_detail'),
     
 ]
