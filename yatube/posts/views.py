@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 
 from .models import Group, Post
 from .constans import NUMBER_OF_POSTS_PER_PAGE
+from .forms import PostForm
 
 User = get_user_model()
 
@@ -31,26 +32,18 @@ def group_posts(request, slug):
     }
     return render(request, 'posts/group_list.html', context)
 
-'''
-def profile(request, username):
-    # Здесь код запроса к модели и создание словаря контекста
-    context = {username
-    }
-    return render(request, 'posts/profile.html', context)
-'''
+
 def post_detail(request, post_id):
     # Здесь код запроса к модели и создание словаря контекста
     post = get_object_or_404(Post, id=post_id)
     posts_count = Post.objects.filter(author=post.author).count()   
     
     template = 'posts/post_detail.html'
-    context = {#'post_id' : post_id
-        'post' : post, 'posts_count' : posts_count
+    context = {
+        'post' : post, 
+        'posts_count' : posts_count
     }
     return render(request, template, context) 
-
-
-
 
 
 def profile(request, username):
@@ -61,4 +54,15 @@ def profile(request, username):
     page_obj = paginator.get_page(page_number)
     template = 'posts/profile.html'
     context = {'page_obj': page_obj, 'author': author}
-    return render(request, template, context)    
+    return render(request, template, context) 
+
+
+def post_create(request, post_id):
+    # Здесь код запроса к модели и создание словаря контекста
+    form = PostForm
+    
+    template = 'posts/post_detail.html'
+    context = {
+        'form' : form,
+    }
+    return render(request, template, context) 
