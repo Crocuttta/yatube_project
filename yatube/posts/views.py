@@ -1,7 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 from .models import Group, Post
 from .constans import NUMBER_OF_POSTS_PER_PAGE
@@ -57,12 +58,28 @@ def profile(request, username):
     return render(request, template, context) 
 
 
-def post_create(request, post_id):
-    # Здесь код запроса к модели и создание словаря контекста
-    form = PostForm
-    
-    template = 'posts/post_detail.html'
-    context = {
-        'form' : form,
-    }
-    return render(request, template, context) 
+def post_create(request):
+    if request.method == 'POST':        
+        form = PostForm(request.POST)       
+        if form.is_valid():
+            post = form.save(False)
+            post.author = request.user
+            post.save()            
+            return redirect('posts:profile', post.author)
+        else:
+            return render(request, 'posts/post_create.html', {'form': form})
+    else:
+        form = PostForm()
+        return render(request, 'posts/post_create.html', {'form': form})
+
+@login_required   
+def post_edit(request, post_id):    
+    post = get_object_or_404(Post, id=post_id)
+    if request.user != post.author:
+        return redirect('posts:post_detail', post_id)
+    form = PostForm(request.POST or None, instance=post)
+    if form.is_valid():
+        form.save()
+        return redirect('posts:post_detail', post_id=post.id)
+    context = {'form': form, 'is_edit': True}
+    return render(request, 'posts/post_create.html', context)

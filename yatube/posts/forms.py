@@ -1,5 +1,7 @@
 from django import forms
+from .models import Post
 
-class PostForm(forms.Form):
-    text = forms.CharField(label='text', max_length=1000, required=True)
-    group = forms.CharField(label='group', max_length=100)
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['text', 'group']        
